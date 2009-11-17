@@ -52,6 +52,7 @@ class Hackbot(irc.IRCClient):
 			self.me(make_channel(chan), msg)
 
 class HackbotFactory(protocol.ClientFactory):
+
 	protocol = Hackbot
 
 	def clientConnectionLost(self, connector, reason):
