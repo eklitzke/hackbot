@@ -28,10 +28,18 @@ class Hackbot(irc.IRCClient):
 	def signedOn(self):
 		for channel in config['channels']:
 			self.join(channel)
+
+	def joined(self, channel):
+		# ensure the IRC channel hasn't automatically joined us to a channel not
+		# in the config
+		channel = make_channel(channel)
+		if channel not in config['channels']:
+			self.leave(channel, reason='This is no place for bots!')
 	
 	@checkuser
 	def userJoined(self, user, channel):
-		self.say(channel, 'Greetings, comrade! Honor work!')
+		if channel in config['channels']:
+			self.say(channel, 'Greetings, comrade! Honor work!')
 	
 	@checkuser
 	def privmsg(self, user, channel, message):
